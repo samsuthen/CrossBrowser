@@ -1,0 +1,47 @@
+ 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Test;
+
+public class DragAndDrop {
+
+	public static String Browser = "ie";
+	public static WebDriver dr;
+
+	@Test
+	public static void DD() {
+		if (Browser.equalsIgnoreCase("FF")) {
+			dr = new FirefoxDriver();
+			dr.get("http://demoqa.com/droppable/");
+			dr.manage().window().maximize();
+		}
+
+		if (Browser.equalsIgnoreCase("Chrome")) {
+		
+			System.setProperty("webdriver.chrome.driver", "./chromedriver.exe");
+			dr = new ChromeDriver();
+			dr.get("http://demoqa.com/droppable/");
+			dr.manage().window().maximize();
+		}
+
+		if (Browser.equalsIgnoreCase("ie")) {
+			System.setProperty("webdriver.ie.driver", "./IEDriverServer.exe");
+			dr = new InternetExplorerDriver();
+			dr.get("http://demoqa.com/droppable/");
+			dr.manage().window().maximize();
+		}
+
+		WebElement drag = dr.findElement(By.xpath(".//*[@id='draggableview']"));
+		WebElement drop = dr.findElement(By.xpath(".//*[@id='droppableview']"));
+
+		Actions act = new Actions(dr);
+		act.clickAndHold(drag).moveToElement(drop).release(drag).build()
+				.perform();
+	}
+
+}
